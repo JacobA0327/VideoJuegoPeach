@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private float _gravity = -9.81f;    // Gravedad estándar
     private float _jumpHeight = 3f;     // Altura del salto
 
+    private float _rotationSpeed = 180f; // Velocidad de rotación (grados por segundo)
+
     // Variables para la detección del suelo
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -40,6 +42,13 @@ public class PlayerController : MonoBehaviour
             _moveDir = _moveDir.normalized * _moveSpeed;
         else
             _moveDir = _moveDir * _moveSpeed;
+
+        // Rotación del jugador
+        float rotationInput = Input.GetAxis("Mouse X"); // También puedes usar otro eje, como Horizontal para rotar con teclado
+        transform.Rotate(0, rotationInput * _rotationSpeed * Time.deltaTime, 0);
+
+        // Ajustar dirección de movimiento al frente del jugador
+        _moveDir = transform.TransformDirection(_moveDir);
 
         // Salto
         if (Input.GetButtonDown("Jump") && isGrounded)
